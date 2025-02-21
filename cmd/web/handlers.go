@@ -17,6 +17,10 @@ type snippetCreateForm struct {
 	validator.Validator `form:"-"`
 }
 
+func ping(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("OK"))
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	snippets, err := app.snippets.Latest()
 	if err != nil {
@@ -28,6 +32,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	data.Snippets = snippets
 
 	app.render(w, r, http.StatusOK, "home.tmpl", data)
+}
+
+func (app *application) about(w http.ResponseWriter, r *http.Request) {
+	data := app.newTemplateData(r)
+	app.render(w, r, http.StatusOK, "about.tmpl", data)
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
